@@ -18,7 +18,7 @@ const MessageInput = ({ roomId, onNewMessage }) => {
     setError('');
 
     try {
-      const result = await sendMessage(roomId, message.trim(), authToken, userId);
+      const result = await sendMessage(roomId, message.trim());
       
       if (result.success) {
         // Add the message to the local state immediately for better UX

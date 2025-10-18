@@ -7,7 +7,7 @@ import MessageInput from './MessageInput';
 import './ChatLayout.css';
 
 const ChatLayout = () => {
-  const { authToken, userId, user, logout } = useAuth();
+  const { user, logout } = useAuth();
   const [rooms, setRooms] = useState([]);
   const [currentRoom, setCurrentRoom] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -17,10 +17,10 @@ const ChatLayout = () => {
   // Load rooms on mount
   useEffect(() => {
     const loadRooms = async () => {
-      if (!authToken || !userId) return;
+      if (!user) return;
       
       try {
-        const result = await getRooms(authToken, userId);
+        const result = await getRooms();
         if (result.success) {
           setRooms(result.rooms);
           // Select the first room by default
@@ -38,15 +38,15 @@ const ChatLayout = () => {
     };
 
     loadRooms();
-  }, [authToken, userId]);
+  }, [user]);
 
   // Load messages when room changes
   useEffect(() => {
     const loadMessages = async () => {
-      if (!currentRoom || !authToken || !userId) return;
+      if (!currentRoom || !user) return;
       
       try {
-        const result = await getMessages(currentRoom._id, authToken, userId);
+        const result = await getMessages(currentRoom._id);
         if (result.success) {
           setMessages(result.messages.reverse()); // Reverse to show oldest first
         } else {
@@ -58,15 +58,15 @@ const ChatLayout = () => {
     };
 
     loadMessages();
-  }, [currentRoom, authToken, userId]);
+  }, [currentRoom, user]);
 
   // Poll for new messages every 3 seconds
   useEffect(() => {
-    if (!currentRoom || !authToken || !userId) return;
+    if (!currentRoom || !user) return;
 
     const pollMessages = async () => {
       try {
-        const result = await getMessages(currentRoom._id, authToken, userId);
+        const result = await getMessages(currentRoom._id);
         if (result.success) {
           const newMessages = result.messages.reverse();
           setMessages(prevMessages => {
@@ -84,7 +84,7 @@ const ChatLayout = () => {
 
     const interval = setInterval(pollMessages, 3000);
     return () => clearInterval(interval);
-  }, [currentRoom, authToken, userId]);
+  }, [currentRoom, user]);
 
   const handleRoomSelect = (room) => {
     setCurrentRoom(room);
@@ -155,7 +155,7 @@ const ChatLayout = () => {
               
               <MessageList 
                 messages={messages} 
-                currentUserId={userId}
+                currentUserId={user._id}
               />
               
               <MessageInput 

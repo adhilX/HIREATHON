@@ -1,17 +1,4 @@
-import axios from 'axios';
-
-const BASE_URL = import.meta.env.VITE_ROCKETCHAT_URL;
-
-const api = axios.create({
-  baseURL: `${BASE_URL}/api/v1`,
-});
-
-// Helper function to get auth headers
-const getAuthHeaders = (authToken, userId) => ({
-  'X-Auth-Token': authToken,
-  'X-User-Id': userId,
-  'Content-Type': 'application/json',
-});
+import api from '../axios/axiosInstance';
 
 // Authentication
 export const login = async (username, password) => {
@@ -43,11 +30,9 @@ export const login = async (username, password) => {
 };
 
 // Get user info
-export const getUserInfo = async (authToken, userId) => {
+export const getUserInfo = async () => {
   try {
-    const response = await api.get('/me', {
-      headers: getAuthHeaders(authToken, userId),
-    });
+    const response = await api.get('/me');
     return {
       success: true,
       user: response.data,
@@ -61,11 +46,9 @@ export const getUserInfo = async (authToken, userId) => {
 };
 
 // Get rooms/channels
-export const getRooms = async (authToken, userId) => {
+export const getRooms = async () => {
   try {
-    const response = await api.get('/rooms.get', {
-      headers: getAuthHeaders(authToken, userId),
-    });
+    const response = await api.get('/rooms.get');
     return {
       success: true,
       rooms: response.data.update || [],
@@ -79,11 +62,9 @@ export const getRooms = async (authToken, userId) => {
 };
 
 // Get messages for a room
-export const getMessages = async (roomId, authToken, userId, count = 50) => {
+export const getMessages = async (roomId, count = 50) => {
   try {
-    const response = await api.get(`/channels.history?roomId=${roomId}&count=${count}`, {
-      headers: getAuthHeaders(authToken, userId),
-    });
+    const response = await api.get(`/channels.history?roomId=${roomId}&count=${count}`);
     return {
       success: true,
       messages: response.data.messages || [],
@@ -97,15 +78,13 @@ export const getMessages = async (roomId, authToken, userId, count = 50) => {
 };
 
 // Send a message
-export const sendMessage = async (roomId, message, authToken, userId) => {
+export const sendMessage = async (roomId, message) => {
   try {
     const response = await api.post('/chat.sendMessage', {
       message: {
         rid: roomId,
         msg: message,
       },
-    }, {
-      headers: getAuthHeaders(authToken, userId),
     });
     return {
       success: true,
@@ -120,11 +99,9 @@ export const sendMessage = async (roomId, message, authToken, userId) => {
 };
 
 // Get room info
-export const getRoomInfo = async (roomId, authToken, userId) => {
+export const getRoomInfo = async (roomId) => {
   try {
-    const response = await api.get(`/rooms.info?roomId=${roomId}`, {
-      headers: getAuthHeaders(authToken, userId),
-    });
+    const response = await api.get(`/rooms.info?roomId=${roomId}`);
     return {
       success: true,
       room: response.data.room,
@@ -138,11 +115,9 @@ export const getRoomInfo = async (roomId, authToken, userId) => {
 };
 
 // Logout
-export const logout = async (authToken, userId) => {
+export const logout = async () => {
   try {
-    await api.post('/logout', {}, {
-      headers: getAuthHeaders(authToken, userId),
-    });
+    await api.post('/logout');
     return { success: true };
   } catch (error) {
     return {
