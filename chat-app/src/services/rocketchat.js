@@ -7,24 +7,39 @@ export const login = async (username, password) => {
       user: username,
       password: password,
     });
-    
-    if (response.data.status === 'success') {
-      return {
-        success: true,
-        authToken: response.data.data.authToken,
-        userId: response.data.data.userId,
-        user: response.data.data.me,
-      };
-    } else {
-      return {
-        success: false,
-        error: response.data.error || 'Login failed',
-      };
-    }
+
+    return {
+      success: true,
+      authToken: response.data.data.authToken,
+      userId: response.data.data.userId,
+      user: response.data.data.me,
+    };
   } catch (error) {
     return {
       success: false,
-      error: error.response?.data?.error || 'Network error during login',
+      error: error.response?.data?.error || 'Login failed',
+    };
+  }
+};
+
+// Signup/Register
+export const signup = async (userData) => {
+  try {
+    const response = await api.post('/users.register', {
+      name: userData.name,
+      username: userData.username,
+      email: userData.email,
+      pass: userData.password,
+    });
+
+    return {
+      success: true,
+      data: response.data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error.response?.data?.error || 'Registration failed',
     };
   }
 };
@@ -110,6 +125,56 @@ export const getRoomInfo = async (roomId) => {
     return {
       success: false,
       error: error.response?.data?.error || 'Failed to get room info',
+    };
+  }
+};
+
+// Get all users with presence info
+export const getUsersPresence = async () => {
+  try {
+    const response = await api.get('/users.list');
+    return {
+      success: true,
+      users: response.data.users || [],
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error.response?.data?.error || 'Failed to get users',
+    };
+  }
+};
+
+// Get user presence by userId
+export const getUserPresence = async (userId) => {
+  try {
+    const response = await api.get(`/users.getPresence?userId=${userId}`);
+    return {
+      success: true,
+      presence: response.data.presence,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error.response?.data?.error || 'Failed to get user presence',
+    };
+  }
+};
+
+// Set user presence status
+export const setUserPresence = async (status) => {
+  try {
+    const response = await api.post('/users.setStatus', {
+      status: status, // 'online', 'away', 'busy', 'offline'
+    });
+    return {
+      success: true,
+      data: response.data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error.response?.data?.error || 'Failed to set presence',
     };
   }
 };

@@ -3,7 +3,13 @@ import './Message.css';
 
 const Message = ({ message, isOwn }) => {
   const formatTime = (timestamp) => {
+    // Handle cases where timestamp might be missing or invalid
+    if (!timestamp) return 'Sending...';
+    
     const date = new Date(timestamp);
+    // Check if date is valid
+    if (isNaN(date.getTime())) return 'Sending...';
+    
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
@@ -41,10 +47,10 @@ const Message = ({ message, isOwn }) => {
       <div className="message-bubble">
         <div className="message-header">
           <span className="sender-name">
-            {message.u?.name || message.u?.username || 'Unknown User'}
+            {message.u?.name || message.u?.username || message.username || 'Sending...'}
           </span>
           <span className="message-time">
-            {formatTime(message.ts)}
+            {formatTime(message.ts || message._updatedAt || message.createdAt)}
           </span>
         </div>
         

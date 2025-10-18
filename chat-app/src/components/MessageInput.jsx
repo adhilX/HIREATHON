@@ -7,7 +7,7 @@ const MessageInput = ({ roomId, onNewMessage }) => {
   const [message, setMessage] = useState('');
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
-  const { authToken, userId } = useAuth();
+  const { authToken, userId, user } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,18 +17,38 @@ const MessageInput = ({ roomId, onNewMessage }) => {
     setSending(true);
     setError('');
 
+    // Create a temporary message for immediate display
+    const tempMessage = {
+      _id: `temp-${Date.now()}`, // Temporary ID
+      msg: message.trim(),
+      ts: new Date(), // Current timestamp
+      u: {
+        _id: userId,
+        username: user?.username || user?.name || 'You',
+        name: user?.name || user?.username || 'You'
+      },
+      rid: roomId,
+      _updatedAt: new Date()
+    };
+
+    // Add temporary message immediately for better UX
+    onNewMessage(tempMessage);
+    setMessage('');
+
     try {
       const result = await sendMessage(roomId, message.trim());
       
       if (result.success) {
-        // Add the message to the local state immediately for better UX
-        onNewMessage(result.message);
-        setMessage('');
+        // The polling mechanism will fetch the real message from server
+        // and replace the temporary one
+        console.log('Message sent successfully');
       } else {
         setError(result.error || 'Failed to send message');
+        // TODO: Remove the temporary message on error
       }
     } catch (err) {
       setError('An unexpected error occurred');
+      // TODO: Remove the temporary message on error
     } finally {
       setSending(false);
     }
