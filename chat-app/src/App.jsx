@@ -5,11 +5,13 @@ import Login from './components/Login';
 import Signup from './pages/Signup';
 import Layout from './components/layout/Layout';
 import Dashboard from './pages/Dashboard';
-import Team from './pages/Team';
+import Users from './pages/Users';
 import Threads from './pages/Threads';
-import Search from './pages/Search';
 import Insights from './pages/Insights';
+import PinnedMessages from './components/PinnedMessages';
 import './App.css';
+import './styles/scrollbar.css';
+import { Toaster } from 'react-hot-toast';
 
 const AppContent = () => {
   const { isAuthenticated, loading } = useAuth();
@@ -47,9 +49,9 @@ const AppContent = () => {
         >
           <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="team" element={<Team />} />
+          <Route path="users" element={<Users />} />
           <Route path="threads" element={<Threads />} />
-          <Route path="search" element={<Search />} />
+          <Route path="pinned" element={<PinnedMessages />} />
           <Route path="insights" element={<Insights />} />
         </Route>
         
@@ -66,7 +68,8 @@ const AppContent = () => {
 function App() {
   return (
     <AuthProvider>
-      <AppContent />
+        <AppContent />
+        <Toaster position="top-right" reverseOrder={false}/>
     </AuthProvider>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { sendMessage } from '../services/rocketchat';
+import { sendMessage } from '../services';
 import './MessageInput.css';
 
 const MessageInput = ({ roomId, onNewMessage }) => {
@@ -62,44 +62,48 @@ const MessageInput = ({ roomId, onNewMessage }) => {
   };
 
   return (
-    <div className="message-input-container">
+    <div className="w-full">
       {error && (
-        <div className="error-message">
+        <div className="mb-3 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
           {error}
         </div>
       )}
       
-      <form onSubmit={handleSubmit} className="message-input-form">
-        <div className="input-wrapper">
+      <form onSubmit={handleSubmit} className="flex items-end space-x-3">
+        <div className="flex-1 relative">
           <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Type a message..."
             disabled={sending}
-            className="message-textarea"
+            className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-400 resize-none focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500/50 transition-all duration-300 backdrop-blur-sm"
             rows="1"
           />
-          <button
-            type="submit"
-            disabled={!message.trim() || sending}
-            className="send-button"
-          >
-            {sending ? (
-              <div className="sending-spinner"></div>
-            ) : (
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            )}
-          </button>
         </div>
+        <button
+          type="submit"
+          disabled={!message.trim() || sending}
+          className={`p-3 rounded-lg transition-all duration-300 ${
+            !message.trim() || sending
+              ? 'bg-white/20 text-gray-400 cursor-not-allowed'
+              : 'bg-green-500 text-white hover:shadow-lg hover:shadow-green-500/50 hover:scale-105'
+          }`}
+        >
+          {sending ? (
+            <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+          ) : (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          )}
+        </button>
       </form>
     </div>
   );

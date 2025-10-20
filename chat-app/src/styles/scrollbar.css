@@ -1,0 +1,161 @@
+/* Custom Scrollbar Styles */
+
+/* Global Webkit Scrollbars (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(34, 197, 94, 0.6); /* Green-500 with opacity */
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(34, 197, 94, 0.8); /* Green-500 with higher opacity */
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.4);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: rgb(34, 197, 94); /* Full green-500 */
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+}
+
+::-webkit-scrollbar-corner {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Glowing scrollbar track on hover */
+::-webkit-scrollbar-track:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Firefox Scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(34, 197, 94, 0.6) rgba(255, 255, 255, 0.05);
+}
+
+/* Custom scrollbar classes for specific components */
+.scrollbar-green {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(34, 197, 94, 0.6) rgba(255, 255, 255, 0.05);
+}
+
+.scrollbar-green::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scrollbar-green::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.scrollbar-green::-webkit-scrollbar-thumb {
+  background: rgba(34, 197, 94, 0.6);
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+
+.scrollbar-green::-webkit-scrollbar-thumb:hover {
+  background: rgba(34, 197, 94, 0.8);
+  transform: scale(1.1);
+}
+
+/* Thin scrollbar for compact areas */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(34, 197, 94, 0.4) transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(34, 197, 94, 0.4);
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(34, 197, 94, 0.7);
+}
+
+/* Hide scrollbar but keep functionality */
+.scrollbar-hidden {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* Smooth scrolling */
+.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for message list */
+.message-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(34, 197, 94, 0.5) rgba(255, 255, 255, 0.03);
+}
+
+.message-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.message-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 3px;
+  margin: 4px 0;
+}
+
+.message-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(34, 197, 94, 0.5) 0%, rgba(34, 197, 94, 0.7) 100%);
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+.message-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(34, 197, 94, 0.7) 0%, rgba(34, 197, 94, 0.9) 100%);
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.3);
+}
+
+/* Sidebar scrollbar */
+.sidebar-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(34, 197, 94, 0.3) transparent;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(34, 197, 94, 0.3);
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(34, 197, 94, 0.6);
+}

@@ -63,6 +63,140 @@
   font-size: 14px;
   line-height: 1.4;
   white-space: pre-wrap;
+  position: relative;
+}
+
+/* Edit functionality styles */
+.message-actions {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.message-container:hover .message-actions {
+  opacity: 1;
+}
+
+.action-btn {
+  background: white;
+  border: 1px solid #e1e5e9;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.action-btn:hover {
+  background: #f8f9fa;
+  transform: scale(1.1);
+}
+
+.edit-btn:hover {
+  background: #e3f2fd;
+  border-color: #2196f3;
+}
+
+.delete-btn:hover {
+  background: #ffebee;
+  border-color: #f44336;
+}
+
+.pin-btn:hover {
+  background: #fff3e0;
+  border-color: #ff9800;
+}
+
+.pin-btn.pinned {
+  background: #fff3e0;
+  border-color: #ff9800;
+  color: #ff9800;
+}
+
+
+.pinned-indicator {
+  color: #ff9800;
+  font-weight: bold;
+}
+
+.edit-container {
+  width: 100%;
+}
+
+.edit-textarea {
+  width: 100%;
+  min-height: 60px;
+  padding: 8px 12px;
+  border: 2px solid #667eea;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  line-height: 1.4;
+  resize: vertical;
+  outline: none;
+  background: white;
+  color: #333;
+}
+
+.message-container.own .edit-textarea {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(255, 255, 255, 0.8);
+  color: #333;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  justify-content: flex-end;
+}
+
+.save-btn, .cancel-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.save-btn {
+  background: #667eea;
+  color: white;
+}
+
+.save-btn:hover:not(:disabled) {
+  background: #5a6fd8;
+}
+
+.save-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.cancel-btn {
+  background: #f8f9fa;
+  color: #666;
+  border: 1px solid #e1e5e9;
+}
+
+.cancel-btn:hover:not(:disabled) {
+  background: #e9ecef;
+}
+
+.edited-indicator {
+  font-style: italic;
+  opacity: 0.6;
 }
 
 .message-attachments {
@@ -116,6 +250,47 @@
   
   .message-time {
     font-size: 10px;
+  }
+}
+
+/* Message highlight animation for search navigation */
+.highlight-message {
+  animation: highlightPulse 3s ease-in-out;
+  position: relative;
+}
+
+.highlight-message::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  background: linear-gradient(45deg, #10b981, #059669);
+  border-radius: 16px;
+  z-index: -1;
+  opacity: 0.3;
+  animation: highlightGlow 3s ease-in-out;
+}
+
+@keyframes highlightPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+@keyframes highlightGlow {
+  0%, 100% {
+    opacity: 0;
+  }
+  20%, 80% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.5;
   }
 }
 

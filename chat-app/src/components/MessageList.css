@@ -1,5 +1,5 @@
 .message-list {
-  flex: 1;
+  height: 100%;
   overflow-y: auto;
   padding: 16px 24px;
   display: flex;
@@ -17,22 +17,37 @@
   text-align: center;
 }
 
-/* Scrollbar styling */
+/* Green themed scrollbar styling for message list */
+.message-list {
+  /* Firefox scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(34, 197, 94, 0.6) rgba(255, 255, 255, 0.03);
+}
+
 .message-list::-webkit-scrollbar {
   width: 6px;
 }
 
 .message-list::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 3px;
+  margin: 4px 0;
 }
 
 .message-list::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
+  background: linear-gradient(180deg, rgba(34, 197, 94, 0.5) 0%, rgba(34, 197, 94, 0.7) 100%);
   border-radius: 3px;
+  transition: all 0.3s ease;
 }
 
 .message-list::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
+  background: linear-gradient(180deg, rgba(34, 197, 94, 0.7) 0%, rgba(34, 197, 94, 0.9) 100%);
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.3);
+}
+
+.message-list::-webkit-scrollbar-thumb:active {
+  background: rgb(34, 197, 94);
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.5);
 }
 
 /* Responsive design */

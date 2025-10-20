@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { getRooms, getMessages } from '../services/rocketchat';
+import { getRooms, getMessages } from '../services';
 import RoomList from './RoomList';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
-import TeamView from './features/TeamView';
+import UsersView from './features/UsersView';
+import PinnedMessages from './PinnedMessages';
 import './ChatLayout.css';
 
 const ChatLayout = () => {
@@ -14,7 +15,8 @@ const ChatLayout = () => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [activeTab, setActiveTab] = useState('chat'); // 'chat', 'team', 'threads', 'pinned'
+  const [activeTab, setActiveTab] = useState('chat'); // 'chat', 'team', 'pinned'
+  const [showPinnedMessages, setShowPinnedMessages] = useState(false);
 
   // Load rooms on mount
   useEffect(() => {
@@ -97,6 +99,31 @@ const ChatLayout = () => {
     setMessages(prevMessages => [...prevMessages, message]);
   };
 
+  const handleMessageUpdate = (messageId, newText, isDeleted = false, isPinned = null) => {
+    setMessages(prevMessages => {
+      if (isDeleted) {
+        // Remove the message
+        return prevMessages.filter(msg => msg._id !== messageId);
+      } else {
+        // Update the message text and/or pin status
+        return prevMessages.map(msg => {
+          if (msg._id === messageId) {
+            const updates = {};
+            if (newText !== msg.msg) {
+              updates.msg = newText;
+              updates.editedAt = new Date().toISOString();
+            }
+            if (isPinned !== null) {
+              updates.pinned = isPinned;
+            }
+            return { ...msg, ...updates };
+          }
+          return msg;
+        });
+      }
+    });
+  };
+
   const handleLogout = () => {
     logout();
   };
@@ -128,27 +155,35 @@ const ChatLayout = () => {
 
   const tabs = [
     { id: 'chat', label: 'Chat', icon: '💬' },
-    { id: 'team', label: 'Team', icon: '👥' },
-    { id: 'threads', label: 'Threads', icon: '🧵' },
+    { id: 'users', label: 'Users', icon: '👥' },
     { id: 'pinned', label: 'Pinned', icon: '📌' },
   ];
 
   const renderContent = () => {
     switch (activeTab) {
-      case 'team':
-        return <TeamView />;
-      case 'threads':
-        return (
-          <div className="p-6">
-            <h2 className="text-2xl font-bold mb-4">All Threads</h2>
-            <p className="text-gray-500">Coming soon...</p>
-          </div>
-        );
+      case 'users':
+        return <UsersView />;
       case 'pinned':
         return (
-          <div className="p-6">
-            <h2 className="text-2xl font-bold mb-4">Pinned Messages</h2>
-            <p className="text-gray-500">Coming soon...</p>
+          <div className="h-full">
+            {currentRoom ? (
+              <div className="h-full">
+                <PinnedMessages
+                  isOpen={true}
+                  onClose={() => setActiveTab('chat')}
+                  channel={currentRoom}
+                  isModal={false}
+                />
+              </div>
+            ) : (
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                  <div className="text-6xl mb-4">📌</div>
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">Select a Channel</h3>
+                  <p className="text-gray-500">Choose a channel to view its pinned messages</p>
+                </div>
+              </div>
+            )}
           </div>
         );
       case 'chat':
@@ -163,22 +198,24 @@ const ChatLayout = () => {
               />
             </div>
             
-            <div className="flex-1 flex flex-col">
+            <div className="flex-1 flex flex-col h-full">
               {currentRoom ? (
                 <>
-                  <div className="border-b border-gray-200 p-4 bg-white">
+                  <div className="border-b border-gray-200 p-4 bg-white flex-shrink-0">
                     <h3 className="font-semibold text-lg">#{currentRoom.name}</h3>
                     <p className="text-gray-600 text-sm">{currentRoom.topic || 'No topic set'}</p>
                   </div>
                   
-                  <div className="flex-1 overflow-hidden">
+                  <div className="flex-1 min-h-0">
                     <MessageList 
                       messages={messages} 
                       currentUserId={user._id}
+                      onMessageUpdate={handleMessageUpdate}
+                      roomId={currentRoom._id}
                     />
                   </div>
                   
-                  <div className="border-t border-gray-200 p-4 bg-white">
+                  <div className="border-t border-gray-200 p-4 bg-white flex-shrink-0">
                     <MessageInput 
                       roomId={currentRoom._id}
                       onNewMessage={handleNewMessage}

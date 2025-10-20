@@ -100,31 +100,27 @@ export const removeFromStorage = (key) => {
 };
 
 // URL utilities
-export const createSearchUrl = (query, filters = {}) => {
-  const params = new URLSearchParams();
-  params.set('query', query);
+export const createUrl = (path, params = {}) => {
+  const urlParams = new URLSearchParams();
   
-  Object.entries(filters).forEach(([key, value]) => {
+  Object.entries(params).forEach(([key, value]) => {
     if (value) {
-      params.set(key, value);
+      urlParams.set(key, value);
     }
   });
   
-  return `/search?${params.toString()}`;
+  return urlParams.toString() ? `${path}?${urlParams.toString()}` : path;
 };
 
-export const parseSearchUrl = (search) => {
+export const parseUrlParams = (search) => {
   const params = new URLSearchParams(search);
-  const query = params.get('query') || '';
-  const filters = {};
+  const result = {};
   
   for (const [key, value] of params.entries()) {
-    if (key !== 'query') {
-      filters[key] = value;
-    }
+    result[key] = value;
   }
   
-  return { query, filters };
+  return result;
 };
 
 // Debounce utility

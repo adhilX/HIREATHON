@@ -26,7 +26,6 @@ export const NOTIFICATION_TYPES = {
 
 // Keyboard shortcuts
 export const KEYBOARD_SHORTCUTS = {
-  SEARCH: 'ctrl+k',
   DND_TOGGLE: 'ctrl+shift+d',
   NEW_THREAD: 'ctrl+t',
   ESCAPE: 'escape',
@@ -43,7 +42,6 @@ export const API_ENDPOINTS = {
   SEND_MESSAGE: '/api/v1/chat.sendMessage',
   ROOM_INFO: '/api/v1/rooms.info',
   USER_STATUS: '/api/v1/users.setStatus',
-  SEARCH: '/api/v1/chat.search',
   THREADS: '/api/v1/chat.getThreadsList',
   PINNED_MESSAGES: '/api/v1/chat.getPinnedMessages',
   NOTIFICATIONS: '/api/v1/notifications.get',
@@ -56,7 +54,6 @@ export const STORAGE_KEYS = {
   USER_DATA: 'user',
   USER_STATUS: 'userStatus',
   NOTIFICATION_SETTINGS: 'notificationSettings',
-  SEARCH_HISTORY: 'searchHistory',
   THEME: 'theme',
 };
 
@@ -130,13 +127,6 @@ export const PAGINATION = {
   LOAD_MORE_THRESHOLD: 5,
 };
 
-// Search
-export const SEARCH = {
-  MIN_QUERY_LENGTH: 2,
-  DEBOUNCE_DELAY: 300,
-  MAX_RESULTS: 50,
-  MAX_HISTORY: 10,
-};
 
 // File upload
 export const FILE_UPLOAD = {
@@ -158,7 +148,6 @@ export const ERROR_MESSAGES = {
   NETWORK_ERROR: 'Network error. Please check your connection.',
   LOGIN_FAILED: 'Login failed. Please check your credentials.',
   MESSAGE_SEND_FAILED: 'Failed to send message. Please try again.',
-  SEARCH_FAILED: 'Search failed. Please try again.',
   UNAUTHORIZED: 'You are not authorized to perform this action.',
   NOT_FOUND: 'The requested resource was not found.',
   SERVER_ERROR: 'Server error. Please try again later.',
